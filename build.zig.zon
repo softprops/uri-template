@@ -7,7 +7,6 @@
         .benchmark = .{
             .url = "https://github.com/silversquirl/benchmark.zig/archive/refs/heads/main/main.tar.gz",
             .hash = "1220287c22cfcf85f05d353084e12200c6a7dcb5f4511cb05103f5dbd709e50731a7",
-            .lazy = true,
         },
     },
     .paths = .{

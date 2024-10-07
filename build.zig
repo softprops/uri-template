@@ -40,10 +40,10 @@ pub fn build(b: *std.Build) !void {
     });
     benchmark_tests.root_module.addImport(
         "benchmark",
-        b.lazyDependency("benchmark", .{
+        b.dependency("benchmark", .{
             .target = target,
             .optimize = optimize,
-        }).?.module("benchmark"),
+        }).module("benchmark"),
     );
     const run_benchmark_tests = b.addRunArtifact(benchmark_tests);
     const benchmark_step = b.step("bench", "Run benchmark tests");
