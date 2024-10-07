@@ -10,7 +10,7 @@ jobs:
         runs-on: ubuntu-latest
         permissions:
             contents: write
-        needs: [fmt, test, examples]
+        needs: [fmt, test, bench]
         steps:
             - name: Checkout
               uses: actions/checkout@v4
@@ -40,7 +40,7 @@ jobs:
             - uses: goto-bus-stop/setup-zig@v2
               with:
                   version: 0.13.0
-            - name: Examples
+            - name: Bench
               run: zig build bench -Doptimize=ReleaseFast
     test:
         runs-on: ubuntu-latest
