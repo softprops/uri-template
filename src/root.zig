@@ -7,7 +7,6 @@ const testing = std.testing;
 
 /// A parsed uri template
 ///
-/// Call the `render` function apply it to a set of data
 pub const Template = struct {
     const Component = union(enum) {
         raw: []const u8,
@@ -96,9 +95,6 @@ pub const Template = struct {
 
     /// Render template to a string with a given struct containing
     /// fields whose names match those of the placeholders of this template
-    ///
-    /// This substitution does not impose url encoding so if value's require it
-    /// callers should provide pre-encoded data
     pub fn render(
         self: @This(),
         writer: anytype,
