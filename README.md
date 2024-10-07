@@ -8,7 +8,7 @@
 
 ---
 
-[![Main](https://github.com/softprops/url-template/actions/workflows/ci.yml/badge.svg)](https://github.com/softprops/url-template/actions/workflows/ci.yml) ![License Info](https://img.shields.io/github/license/softprops/url-template) ![Release](https://img.shields.io/github/v/release/softprops/url-template) [![Zig Support](https://img.shields.io/badge/zig-0.13.0-black?logo=zig)](https://ziglang.org/documentation/0.13.0/)
+[![Main](https://github.com/softprops/uri-template/actions/workflows/ci.yml/badge.svg)](https://github.com/softprops/uri-template/actions/workflows/ci.yml) ![License Info](https://img.shields.io/github/license/softprops/uri-template) ![Release](https://img.shields.io/github/v/release/softprops/uri-template) [![Zig Support](https://img.shields.io/badge/zig-0.13.0-black?logo=zig)](https://ziglang.org/documentation/0.13.0/)
 
 
 ## examples
@@ -26,7 +26,7 @@ Create a `build.zig.zon` file to declare a dependency
 Starting in zig 0.12.0, you can use and should prefer
 
 ```sh
-zig fetch --save https://github.com/softprops/url-template/archive/refs/tags/v0.1.0.tar.gz
+zig fetch --save https://github.com/softprops/uri-template/archive/refs/tags/v0.1.0.tar.gz
 ```
 
 otherwise, to manually add it, do so as follows
@@ -39,7 +39,7 @@ otherwise, to manually add it, do so as follows
 +       // 👇 declare dep properties
 +        .bson = .{
 +            // 👇 uri to download
-+            .url = "https://github.com/softprops/url-template/archive/refs/tags/v0.1.0.tar.gz",
++            .url = "https://github.com/softprops/uri-template/archive/refs/tags/v0.1.0.tar.gz",
 +            // 👇 hash verification
 +            .hash = "...",
 +        },
@@ -47,7 +47,7 @@ otherwise, to manually add it, do so as follows
 }
 ```
 
-> the hash below may vary. you can also depend any tag with `https://github.com/softprops/url-template/archive/refs/tags/v{version}.tar.gz` or current main with `https://github.com/softprops/url-template/archive/refs/heads/main/main.tar.gz`. to resolve a hash omit it and let zig tell you the expected value.
+> the hash below may vary. you can also depend any tag with `https://github.com/softprops/uri-template/archive/refs/tags/v{version}.tar.gz` or current main with `https://github.com/softprops/uri-template/archive/refs/heads/main/main.tar.gz`. to resolve a hash omit it and let zig tell you the expected value.
 
 Add the following in your `build.zig` file
 
