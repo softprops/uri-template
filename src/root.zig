@@ -37,33 +37,23 @@ pub const Template = struct {
         self.allocator.free(self.components);
     }
 
-    fn assertString(f: std.builtin.Type.StructField) void {
+    fn assertStringlike(f: std.builtin.Type.StructField) void {
         // value must be slice or array of u8
+        const msg = "data values must be of type []const u8, '" ++ f.name ++ "' is of type " ++ @typeName(f.type);
         switch (@typeInfo(f.type)) {
             .Pointer => |p| {
                 switch (p.size) {
                     .One => switch (@typeInfo(p.child)) {
-                        .Array => |a| if (a.child != u8) {
-                            @compileError(
-                                "data values must be of type []const u8, '" ++ f.name ++ "' is an containing type " ++ @typeName(p.child),
-                            );
-                        },
-                        else => @compileError(
-                            "data values must be of type []const u8, '" ++ f.name ++ "' is of type " ++ @typeName(f.type),
-                        ),
+                        .Array => |a| if (a.child != u8)
+                            @compileError(msg),
+                        else => @compileError(msg),
                     },
-                    .Slice => if (p.child == 8)
-                        @compileError(
-                            "data values must be of type []const u8, '" ++ f.name ++ "' is of type " ++ @typeName(p.child),
-                        ),
-                    else => @compileError(
-                        "data values must be of type []const u8, '" ++ f.name ++ "' is of type " ++ @typeName(p.child),
-                    ),
+                    .Slice => if (p.child != u8)
+                        @compileError(msg),
+                    else => @compileError(msg),
                 }
             },
-            else => @compileError(
-                "data values must be of type []const u8, '" ++ f.name ++ "' is of type " ++ @typeName(f.type),
-            ),
+            else => @compileError(msg),
         }
     }
 
@@ -104,13 +94,13 @@ pub const Template = struct {
         const T = @TypeOf(data);
         return switch (@typeInfo(T)) {
             .Struct => |s| {
-                comptime var names: [s.fields.len]struct { []const u8, []const u8 } = undefined;
-
+                var names: [s.fields.len]struct { []const u8, []const u8 } = undefined;
                 inline for (s.fields, 0..) |f, i| {
-                    assertString(f);
+                    assertStringlike(f);
                     names[i] = .{ f.name, @field(data, f.name) };
                 }
-                const lookup = std.StaticStringMap([]const u8).initComptime(names);
+                const lookup = try std.StaticStringMap([]const u8).init(names, self.allocator);
+                defer lookup.deinit(self.allocator);
                 for (self.components) |component| {
                     try switch (component) {
                         .raw => |raw| try writer.writeAll(raw),
@@ -239,7 +229,13 @@ test "render" {
         "https://{username}.gigantic-server.com:{port}/{basePath}",
     );
     defer template.deinit();
-    const rendered = try template.renderAlloc(allocator, .{
+
+    const Data = struct {
+        username: []const u8,
+        port: []const u8,
+        basePath: []const u8,
+    };
+    const rendered = try template.renderAlloc(allocator, Data{
         .username = "foo",
         .port = "8080",
         .basePath = "foo/bar",
