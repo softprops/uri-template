@@ -17,37 +17,13 @@ See examples directory
 
 ## 📼 installing
 
-Create a new exec project with `zig init`. Copy an example from the examples directory into your into `src/main.zig`
-
-Create a `build.zig.zon` file to declare a dependency
-
-> .zon short for "zig object notation" files are essentially zig structs. `build.zig.zon` is zigs native package manager convention for where to declare dependencies
-
-Starting in zig 0.12.0, you can use and should prefer
+Create a new exec project with `zig init` then update `build.zig.zon` by running.
 
 ```sh
-zig fetch --save https://github.com/softprops/uri-template/archive/refs/tags/v0.1.0.tar.gz
+zig fetch --save https://github.com/softprops/uri-template/archive/refs/tags/v0.1.1.tar.gz
 ```
 
-otherwise, to manually add it, do so as follows
-
-```diff
-.{
-    .name = "my-app",
-    .version = "0.1.0",
-    .dependencies = .{
-+       // 👇 declare dep properties
-+        .bson = .{
-+            // 👇 uri to download
-+            .url = "https://github.com/softprops/uri-template/archive/refs/tags/v0.1.0.tar.gz",
-+            // 👇 hash verification
-+            .hash = "...",
-+        },
-    },
-}
-```
-
-> the hash below may vary. you can also depend any tag with `https://github.com/softprops/uri-template/archive/refs/tags/v{version}.tar.gz` or current main with `https://github.com/softprops/uri-template/archive/refs/heads/main/main.tar.gz`. to resolve a hash omit it and let zig tell you the expected value.
+> you can also depend any tag with `https://github.com/softprops/uri-template/archive/refs/tags/v{version}.tar.gz` or current main with `https://github.com/softprops/uri-template/archive/refs/heads/main/main.tar.gz`. to resolve a hash omit it and let zig tell you the expected value.
 
 Add the following in your `build.zig` file
 
